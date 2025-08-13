@@ -1,0 +1,97 @@
+{
+  "POST_REQRES": {
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the person"
+    },
+    "job": {
+      "type": "string",
+      "description": "Job title or role"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the record was created"
+    }
+  },
+  "required": ["name", "job", "id", "createdAt"],
+  "additionalProperties": false
+},
+    "GET_REQRES": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "per_page": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "email": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "avatar": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "email",
+              "first_name",
+              "last_name",
+              "avatar"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "support": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "url",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "page",
+        "per_page",
+        "total",
+        "total_pages"
+      ],
+      "additionalProperties": false
+    }
+}
