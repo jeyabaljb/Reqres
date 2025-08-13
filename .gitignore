@@ -3,9 +3,9 @@ venv/
 .venv/
 
 # Environment/config files
-.env.qa
-.env.*
-*.env
+#.env.qa
+#.env.*
+#*.env
 
 # Python cache
 __pycache__/
