@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Reqres_API' }
+    agent any
 
     stages {
         stage('Checkout') {
