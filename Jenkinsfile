@@ -4,41 +4,42 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Pull code from your GitHub repo
-                git branch: 'main',
-                    url: 'https://github.com/jeyabaljb/Reqres.git'
+                checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Set up Python environment') {
             steps {
-                echo 'Building the project...'
-                // Change this command if your project is not Maven-based
-                sh 'pytest'
+                echo 'Creating virtual environment and installing dependencies'
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    pip install --upgrade pip
+                    pip install pytest
+                '''
             }
         }
 
-        stage('Test') {
+        stage('Run tests') {
             steps {
-                echo 'Running tests...'
-                sh 'pytest'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the application...'
-                // Add your deployment commands here if needed
+                echo 'Running tests with pytest'
+                sh '''
+                    source venv/bin/activate
+                    pytest
+                '''
             }
         }
     }
 
     post {
-        success {
-            echo 'Pipeline completed successfully!'
+        always {
+            echo 'Pipeline completed.'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Build failed.'
+        }
+        success {
+            echo 'Build succeeded.'
         }
     }
 }
