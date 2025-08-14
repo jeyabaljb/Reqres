@@ -15,40 +15,42 @@ pipeline {
                     python3 -m venv venv
                     source venv/bin/activate
                     pip install --upgrade pip
-                    pip install -r requirements.txt
+                    pip install --no-cache-dir -r requirements.txt
                 '''
             }
         }
 
         stage('Run tests') {
             steps {
-                echo 'Running tests with pytest and generating HTML report'
+                echo 'Running tests with pytest'
                 sh '''
-                   source venv/bin/activate
-            pytest --html=report.html
+                    source venv/bin/activate
+                    pytest
                 '''
             }
         }
     }
 
-
     post {
-    always {
-        echo 'Pipeline completed.'
-        archiveArtifacts artifacts: 'report.html', allowEmptyArchive: true
-        publishHTML(target: [
-            reportName: 'Test Report',
-            reportDir: '.',
-            reportFiles: 'report.html',
-            keepAll: true,
-            alwaysLinkToLastBuild: true
-        ])
+        always {
+            // Archive all HTML reports inside the reports directory
+            archiveArtifacts artifacts: 'reports/*.html', allowEmptyArchive: true
+
+            // Publish HTML reports from the reports directory
+            publishHTML(target: [
+                reportName: 'Test Report',
+                reportDir: 'reports',
+                reportFiles: '*.html',
+                keepAll: true,
+                alwaysLinkToLastBuild: true
+            ])
+            echo 'Pipeline completed.'
+        }
+        failure {
+            echo 'Build failed.'
+        }
+        success {
+            echo 'Build succeeded.'
+        }
     }
-    failure {
-        echo 'Build failed.'
-    }
-    success {
-        echo 'Build succeeded.'
-    }
-}
 }
