@@ -22,24 +22,33 @@ pipeline {
 
         stage('Run tests') {
             steps {
-                echo 'Running tests with pytest'
+                echo 'Running tests with pytest and generating HTML report'
                 sh '''
-                    source venv/bin/activate
-                    pytest
+                   source venv/bin/activate
+            pytest --html=report.html
                 '''
             }
         }
     }
 
+
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
-        failure {
-            echo 'Build failed.'
-        }
-        success {
-            echo 'Build succeeded.'
-        }
+    always {
+        echo 'Pipeline completed.'
+        archiveArtifacts artifacts: 'report.html', allowEmptyArchive: true
+        publishHTML(target: [
+            reportName: 'Test Report',
+            reportDir: '.',
+            reportFiles: 'report.html',
+            keepAll: true,
+            alwaysLinkToLastBuild: true
+        ])
     }
+    failure {
+        echo 'Build failed.'
+    }
+    success {
+        echo 'Build succeeded.'
+    }
+}
 }
