@@ -13,9 +13,8 @@ pipeline {
                 echo 'Creating virtual environment and installing dependencies'
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
-                    pip install --upgrade pip
-                    pip install --no-cache-dir -r requirements.txt
+                    venv/bin/pip install --upgrade pip
+                    venv/bin/pip install --no-cache-dir -r requirements.txt
                 '''
             }
         }
@@ -24,8 +23,7 @@ pipeline {
             steps {
                 echo 'Running tests with pytest'
                 sh '''
-                    source venv/bin/activate
-                    pytest
+                    venv/bin/python -m pytest
                 '''
             }
         }
@@ -33,17 +31,16 @@ pipeline {
 
     post {
         always {
-            // Archive all HTML reports inside the reports directory
             archiveArtifacts artifacts: 'reports/*.html', allowEmptyArchive: true
 
-            // Publish HTML reports from the reports directory
             publishHTML(target: [
                 reportName: 'Test Report',
                 reportDir: 'reports',
-                reportFiles: '*.html',
+                reportFiles: 'report.html',
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
+
             echo 'Pipeline completed.'
         }
         failure {
