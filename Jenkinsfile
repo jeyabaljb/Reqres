@@ -23,6 +23,8 @@ pipeline {
         stage('Set up Python environment') {
             steps {
                 sh '''
+                    set -ex
+                    which python3
                     python3 -m venv venv
                     venv/bin/pip install --upgrade pip
                     venv/bin/pip install -r requirements.txt
@@ -36,18 +38,19 @@ pipeline {
                     def envFileId = params.ENVIRONMENT == 'uat' ? 'uat-env-file' : 'qa-env-file'
 
                     withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-                        sh '''
-                            echo "Using environment: ${ENVIRONMENT}"
-                            echo "Sourcing $ENV_FILE"
+                        sh """
+                            set -ex
 
-                            # Source env vars from the secret .env file
+                            echo "Using environment: ${params.ENVIRONMENT}"
+                            echo "Loading env file: \$ENV_FILE"
+
                             set -a
-                            source "$ENV_FILE"
+                            . "\$ENV_FILE"
                             set +a
 
-                            echo "Running in environment: $ENV"
+                            echo "BASE_URL is: \$BASE_URL"
                             venv/bin/python -m pytest
-                        '''
+                        """
                     }
                 }
             }
