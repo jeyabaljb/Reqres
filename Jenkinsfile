@@ -82,22 +82,30 @@ pipeline {
                     Check the attached report or view in Jenkins.
                 """
 
-                mail bcc: '', body: body, cc: '', from: '', replyTo: '', subject: subject, to: 'bimo.mohan@gmail.com'
+                emailext(
+                    to: 'bimo.mohan@gmail.com',
+                    subject: subject,
+                    body: body
+                )
             }
         }
 
         success {
             echo 'Build passed! Sending success email...'
-            mail to: 'bimo.mohan@gmail.com',
-                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Good news! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} passed.\nCheck details at: ${env.BUILD_URL}"
+            emailext(
+                to: 'bimo.mohan@gmail.com',
+                subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Good news! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} passed.\nCheck details at: ${env.BUILD_URL}"
+            )
         }
 
         failure {
             echo 'Build failed! Sending failure email...'
-            mail to: 'bimo.mohan@gmail.com',
-                 subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Oops! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nCheck details at: ${env.BUILD_URL}"
+            emailext(
+                to: 'bimo.mohan@gmail.com',
+                subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Oops! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nCheck details at: ${env.BUILD_URL}"
+            )
         }
     }
 }
