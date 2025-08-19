@@ -67,7 +67,6 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'reports/*.html', allowEmptyArchive: true
-
             publishHTML(target: [
                 reportName: 'Test Report',
                 reportDir: 'reports',
@@ -75,38 +74,30 @@ pipeline {
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
-        }
 
-        failure {
-            echo 'Build failed! Sending email...'
-            mail to: 'bimo.mohan@gmail.com',
-                 subject: "Jenkins Job Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """\
-Hi Team,
+            script {
+                def subject = "${currentBuild.fullDisplayName} - ${currentBuild.currentResult}"
+                def body = """
+                    Build URL: ${env.BUILD_URL}
+                    Check the attached report or view in Jenkins.
+                """
 
-The Jenkins job '${env.JOB_NAME}' has failed at build #${env.BUILD_NUMBER}.
-
-Check console output here: ${env.BUILD_URL}
-
-Regards,
-Jenkins
-"""
+                mail bcc: '', body: body, cc: '', from: '', replyTo: '', subject: subject, to: 'bimo.mohan@gmail.com'
+            }
         }
 
         success {
-            echo 'Build passed. Sending success email...'
+            echo 'Build passed! Sending success email...'
             mail to: 'bimo.mohan@gmail.com',
-                 subject: "Jenkins Job Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """\
-Hi Team,
+                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Good news! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} passed.\nCheck details at: ${env.BUILD_URL}"
+        }
 
-The Jenkins job '${env.JOB_NAME}' completed successfully at build #${env.BUILD_NUMBER}.
-
-You can view the report here: ${env.BUILD_URL}Test_20Report/
-
-Regards,
-Jenkins
-"""
+        failure {
+            echo 'Build failed! Sending failure email...'
+            mail to: 'bimo.mohan@gmail.com',
+                 subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Oops! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nCheck details at: ${env.BUILD_URL}"
         }
     }
 }
