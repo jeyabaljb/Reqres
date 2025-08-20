@@ -1,6 +1,7 @@
 pytest~=8.4.1
 requests~=2.32.4
-pytest-html
+pytest-html~=4.1.1
+pytest-metadata~=3.1.1
 pytest-cov
 python-dotenv~=1.1.1
 jsonschema~=4.25.0
