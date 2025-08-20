@@ -38,34 +38,31 @@ pipeline {
                     def envFileId = params.ENVIRONMENT == 'uat' ? 'uat-env-file' : 'qa-env-file'
 
                     withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-                        sh """
+                        sh '''#!/bin/bash
                             set -ex
 
-                            echo "Using environment: ${params.ENVIRONMENT}"
-                            echo "Loading env file: \$ENV_FILE"
+                            echo "Using environment: ${ENVIRONMENT}"
+                            echo "Loading env file: $ENV_FILE"
 
-                            if [ ! -f "\$ENV_FILE" ]; then
+                            if [ ! -f "$ENV_FILE" ]; then
                                 echo "ERROR: Environment file not found!"
                                 exit 1
                             fi
 
                             set -a
-                            . "\$ENV_FILE"
+                            . "$ENV_FILE"
                             set +a
 
-                            echo "BASE_URL is: \$BASE_URL"
+                            echo "BASE_URL is: $BASE_URL"
 
                             mkdir -p reports
-                           sh '''
-    ...
-    venv/bin/python -m pytest \
-        --html=reports/report.html \
-        --self-contained-html \
-        --metadata Environment qa \
-        --capture=tee-sys
-'''
 
-                        """
+                            venv/bin/python -m pytest \
+                                --html=reports/report.html \
+                                --self-contained-html \
+                                --metadata Environment ${ENVIRONMENT} \
+                                --capture=tee-sys
+                        '''
                     }
                 }
             }
