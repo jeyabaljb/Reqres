@@ -88,7 +88,7 @@ pipeline {
                 """
 
                 emailext(
-                    to: 'bimo.mohan@gmail.com',
+                    to: 'jeyabalt36@gmail.com',
                     subject: subject,
                     body: body
                 )
@@ -98,7 +98,7 @@ pipeline {
         success {
             echo 'Build passed! Sending success email...'
             emailext(
-                to: 'bimo.mohan@gmail.com',
+                to: 'jeyabalt36@gmail.com',
                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Good news! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} passed.\nCheck details at: ${env.BUILD_URL}"
             )
@@ -107,7 +107,7 @@ pipeline {
         failure {
             echo 'Build failed! Sending failure email...'
             emailext(
-                to: 'bimo.mohan@gmail.com',
+                to: 'jeyabalt36@gmail.com',
                 subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Oops! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nCheck details at: ${env.BUILD_URL}"
             )
