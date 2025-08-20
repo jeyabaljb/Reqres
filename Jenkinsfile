@@ -56,11 +56,14 @@ pipeline {
                             echo "BASE_URL is: \$BASE_URL"
 
                             mkdir -p reports
-                            venv/bin/python -m pytest \
-    --html=reports/report.html \
-    --self-contained-html \
-    --metadata="Environment=${params.ENVIRONMENT}" \
-    --capture=tee-sys
+                           sh '''
+    ...
+    venv/bin/python -m pytest \
+        --html=reports/report.html \
+        --self-contained-html \
+        --metadata Environment qa \
+        --capture=tee-sys
+'''
 
                         """
                     }
