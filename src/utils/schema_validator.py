@@ -28,6 +28,8 @@ def schema_get_reqres(response):
 
 def schema_post_reqres(response):
     data = response.json()
+    print(data)
+    print(response.status_code)
     # Validating schema
     if response.status_code in [200, 201, 202]:
        schema = get_schema_by_name("POST_REQRES", "schema_reqres.json", "reqres_schema")

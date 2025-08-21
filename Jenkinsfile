@@ -71,7 +71,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'reports/*.html', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
             publishHTML(target: [
                 reportName: 'Test Report',
                 reportDir: 'reports',

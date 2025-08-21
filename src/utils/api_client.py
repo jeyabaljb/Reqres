@@ -16,7 +16,7 @@ class APIS:
         self.base_headers = {
             "Content-Type": os.getenv("CONTENT_TYPE"),
             "Accept": os.getenv("ACCEPT"),
-            "api_key" : os.getenv("x_api_key")
+            "x-api-key" : os.getenv("X_API_KEY")
         }
 
         # If an auth token is provided, add it to headers as Bearer token
