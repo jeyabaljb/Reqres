@@ -58,8 +58,6 @@ pipeline {
                             mkdir -p reports
 
                             venv/bin/python -m pytest \
-                                --html=reports/report.html \
-                                --self-contained-html \
                                 --metadata Environment ${ENVIRONMENT} \
                                 --capture=tee-sys
                         '''
@@ -88,7 +86,7 @@ pipeline {
                 """
 
                 emailext(
-                    to: 'jeyabalt36@gmail.com',
+                    to: 'jeyabalt36@gmail.com','bimo.mohan@gmail.com',
                     subject: subject,
                     body: body
                 )
