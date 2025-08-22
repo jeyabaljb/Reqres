@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -9,8 +8,7 @@ logger = logging.getLogger(__name__)
 CURRENT_FILE = Path(__file__).resolve()
 PROJECT_ROOT = CURRENT_FILE.parents[2]  # go up 2 levels from utils/
 DATA_DIR = (PROJECT_ROOT / "src" / "data") if (PROJECT_ROOT / "src" / "data").exists() else (PROJECT_ROOT / "data")
-PROJECT_ROOT_SCHEMA=CURRENT_FILE.parents[1]
-SCHEMA_DIR = (PROJECT_ROOT_SCHEMA / "src" / "schema") if (PROJECT_ROOT_SCHEMA / "src" / "schema").exists() else (PROJECT_ROOT_SCHEMA / "schema")
+SCHEMA_DIR = (PROJECT_ROOT / "src" / "schema") if (PROJECT_ROOT / "src" / "schema").exists() else (PROJECT_ROOT / "schema")
 
 def get_payload_by_name(name: str, file_name: str, folder: str) -> dict:
     # Use the DATA_DIR from your config

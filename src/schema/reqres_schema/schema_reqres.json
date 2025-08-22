@@ -1,97 +1,134 @@
 {
   "POST_REQRES": {
-  "type": "object",
-  "properties": {
-    "name": {
-      "type": "string",
-      "description": "Name of the person"
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the person"
+      },
+      "job": {
+        "type": "string",
+        "description": "Job title or role"
+      },
+      "id": {
+        "type": "string",
+        "description": "Unique identifier"
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO 8601 timestamp when the record was created"
+      }
     },
-    "job": {
-      "type": "string",
-      "description": "Job title or role"
-    },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
-    },
-    "createdAt": {
-      "type": "string",
-      "format": "date-time",
-      "description": "ISO 8601 timestamp when the record was created"
-    }
+    "required": ["name", "job", "id", "createdAt"],
+    "additionalProperties": false
   },
-  "required": ["name", "job", "id", "createdAt"],
-  "additionalProperties": false
-},
-    "GET_REQRES": {
-      "type": "object",
-      "properties": {
-        "page": {
-          "type": "integer"
-        },
-        "per_page": {
-          "type": "integer"
-        },
-        "total": {
-          "type": "integer"
-        },
-        "total_pages": {
-          "type": "integer"
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              },
-              "email": {
-                "type": "string"
-              },
-              "first_name": {
-                "type": "string"
-              },
-              "last_name": {
-                "type": "string"
-              },
-              "avatar": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "email",
-              "first_name",
-              "last_name",
-              "avatar"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "support": {
+  "GET_REQRES": {
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer"
+      },
+      "per_page": {
+        "type": "integer"
+      },
+      "total": {
+        "type": "integer"
+      },
+      "total_pages": {
+        "type": "integer"
+      },
+      "data": {
+        "type": "array",
+        "items": {
           "type": "object",
           "properties": {
-            "url": {
+            "id": {
+              "type": "integer"
+            },
+            "email": {
               "type": "string"
             },
-            "text": {
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "avatar": {
               "type": "string"
             }
           },
-          "required": [
-            "url",
-            "text"
-          ],
+          "required": ["id", "email", "first_name", "last_name", "avatar"],
           "additionalProperties": false
         }
       },
-      "required": [
-        "page",
-        "per_page",
-        "total",
-        "total_pages"
-      ],
-      "additionalProperties": false
-    }
+      "support": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "text"],
+        "additionalProperties": false
+      }
+    },
+    "required": ["page", "per_page", "total", "total_pages"],
+    "additionalProperties": false
+  },
+  "GET2_REQRES": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "UserResponse",
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "janet.weaver@reqres.in"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Janet"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Weaver"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://reqres.in/img/faces/2-image.jpg"
+          }
+        },
+        "required": ["id", "email", "first_name", "last_name", "avatar"]
+      },
+      "support": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral"
+          },
+          "text": {
+            "type": "string",
+            "example": "Tired of writing endless social media content? Let Content Caddy generate it for you."
+          }
+        },
+        "required": ["url", "text"]
+      }
+    },
+    "required": ["data", "support"]
+  }
 }

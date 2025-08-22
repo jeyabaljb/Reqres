@@ -10,7 +10,7 @@ class APIS:
         self.base_url = os.getenv("BASE_URL")
         if not self.base_url:
             logger.error("BASE_URL is not set in environment variables.")
-            raise ValueError("BASE_URL must be set in the .env.qa file")
+            raise ValueError("BASE_URL must be set in the .env file")
 
         # Set up base headers from environment variables
         self.base_headers = {

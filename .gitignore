@@ -20,3 +20,5 @@ reports/
 
 # IDE/editor settings
 .idea/
+.coverage
+coverage.xml
