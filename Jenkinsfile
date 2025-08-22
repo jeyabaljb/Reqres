@@ -1,6 +1,16 @@
 pipeline {
     agent any
 
+    triggers {
+        // Run every day at 9:30 AM
+        cron('30 9 * * *')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))   // keep last 10 builds only
+        timestamps()                                     // optional: show timestamps in console logs
+    }
+
     parameters {
         choice(
             name: 'ENVIRONMENT',
@@ -77,6 +87,7 @@ pipeline {
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
+            cleanWs()   // cleanup after archiving
 
             script {
                 def subject = "${currentBuild.fullDisplayName} - ${currentBuild.currentResult}"
@@ -86,7 +97,7 @@ pipeline {
                 """
 
                 emailext(
-                    to: 'jeyabalt36@gmail.com','bimo.mohan@gmail.com',
+                    to: 'jeyabalt36@gmail.com, bimo.mohan@gmail.com',
                     subject: subject,
                     body: body
                 )
@@ -96,7 +107,7 @@ pipeline {
         success {
             echo 'Build passed! Sending success email...'
             emailext(
-                to: 'jeyabalt36@gmail.com',
+                to: 'jeyabalt36@gmail.com, bimo.mohan@gmail.com',
                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Good news! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} passed.\nCheck details at: ${env.BUILD_URL}"
             )
@@ -105,7 +116,7 @@ pipeline {
         failure {
             echo 'Build failed! Sending failure email...'
             emailext(
-                to: 'jeyabalt36@gmail.com',
+                to: 'jeyabalt36@gmail.com, bimo.mohan@gmail.com',
                 subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Oops! Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nCheck details at: ${env.BUILD_URL}"
             )
